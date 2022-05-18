@@ -1,12 +1,20 @@
 import express from "express";
-import { createUser, updateUser } from "../controller/UserController.js";
+import {
+  deleteUser,
+  getUser,
+  getUsers,
+  updateUser,
+} from "../controller/UserController.js";
+import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 
 const userRoute = express();
 
-// Create user
-userRoute.post("/", createUser);
+userRoute.put("/:id", verifyUser, updateUser);
 
-// Update user
-userRoute.put("/:id", updateUser);
+userRoute.delete("/:id", verifyUser, deleteUser);
+
+userRoute.get("/:id", verifyUser, getUser);
+
+userRoute.get("/", verifyAdmin, getUsers);
 
 export default userRoute;

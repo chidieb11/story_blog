@@ -6,16 +6,18 @@ import {
   getPosts,
   updatePost,
 } from "../controller/PostController.js";
+import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
+
 const postRoute = express();
 
-postRoute.post("/", createPost);
+postRoute.post("/", verifyUser, createPost);
 
-postRoute.put("/:id", updatePost);
+postRoute.put("/:id", verifyUser, updatePost);
 
-postRoute.delete("/:id", deletePost);
+postRoute.delete("/:id", verifyUser, deletePost);
 
-postRoute.get("/:id", getPost);
+postRoute.get("/:id", verifyUser, getPost);
 
-postRoute.get("/", getPosts);
+postRoute.get("/", verifyAdmin, getPosts);
 
 export default postRoute;

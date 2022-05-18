@@ -1,22 +1,47 @@
 import User from "../models/User.js";
 
-export const createUser = async (req, res) => {
-  const newUser = new User(req.body);
+// Update User
+export const updateUser = async (req, res, next) => {
   try {
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateUser = async (req, res, next) => {
+// Delete User
+export const deleteUser = async (req, res, next) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, {
-      $set: req.body,
-    });
-    res.status(200).json(updateUser);
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json("User was successfully deleted");
   } catch (error) {
-    console.log(error);
+    next(error);
+  }
+};
+
+// Get User
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get Users
+export const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
   }
 };
