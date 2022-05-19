@@ -6,6 +6,7 @@ import cors from "cors";
 import userRoute from "./routes/UserRoute.js";
 import postRoute from "./routes/PostsRoute.js";
 import authRoute from "./routes/AuthRoute.js";
+import multer from "multer";
 dotenv.config();
 
 const app = express();
@@ -38,6 +39,22 @@ mongoose
     console.log(error);
     process.exit(1);
   });
+
+// HANDLE IMAGE UPLOAD
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    // cb(null, req.body.name);
+    cb(null, "freecodecamp.jpg");
+  },
+});
+
+const upload = multer({ storage: storage });
+app.post("/api/v1/uploads", upload.single("file"), (req, res) => {
+  res.status(200).json("File has been uploaded!");
+});
 
 // LOCAL SERVER SETUP
 const port = process.env.PORT || 5000;
