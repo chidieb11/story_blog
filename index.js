@@ -36,7 +36,7 @@ mongoose
   .then(() => console.log("CONNECTED TO DB"))
   .catch((error) => {
     console.log("DB NOT CONNECTED. EXITING NOW!");
-    console.log(error);
+    next(error);
     process.exit(1);
   });
 
@@ -47,7 +47,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // cb(null, req.body.name);
-    cb(null, "freecodecamp.jpg");
+    cb(null, "code.jpg");
   },
 });
 
